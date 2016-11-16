@@ -1,0 +1,13 @@
+# configure SIGPRO source code for Linux or Mac
+if (test `uname` == "Darwin"); then
+    echo "Configure SIGPRO for Mac.";
+    rm -f Makefile
+    cp -f makefile.mac Makefile
+    echo "Type 'make'."
+else
+    echo "Configure SIGPRO for Linux.";
+    rm -f Makefile
+    cp -f makefile.lnx Makefile
+    echo "Type 'make'."
+fi
+
