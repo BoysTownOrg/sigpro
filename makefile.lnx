@@ -1,8 +1,11 @@
 # makefile for SIGPRO under Linux
 
 # remove -DZLIB & -lz to compile without zlib
-CFLAGS=-Wall -I$(INCDIR) -DZLIB
-LIBS=-lm -lz
+#CFLAGS=-Wall -I$(INCDIR) -DZLIB
+#LIBS=-lm -lz
+CFLAGS=-Wall -I$(INCDIR)
+LIBS=-lm
+
 CC=gcc
 AR=ar
 SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
