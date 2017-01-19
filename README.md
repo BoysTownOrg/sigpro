@@ -2,33 +2,34 @@ SIGPRO
 
 Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains what the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+SIGPRO is a library of signal-processing functions designed to assist in the development of auditory research software. Current functions include random number generators, fft, inverse fft, frequency shaping (filtering), and sample rate conversion. Limited support is provided for loading and saving MATLAB (version 4) binary (MAT) files. 
 
 Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out how your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+    // Butterworth filter
+    sp_butter(b, a, no, wn, ft);        // filter coefficients
+    sp_filter(b, nc, a, nc, x, y, np);  // impulse response
 
 Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
+To provide C programs with basic signal-processing functions available in MATLAB.
 
 Installation
 
-Provide code examples and explanations of how to get the project.
+Download repo from https://github.com/BTNRH/sigpro. Makefiles are provided for building test programs at Linux, MacOS, or MinGW command lines. A solution file is provided in the VS9 folder for building under Visual Studio.
 
 API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+The API is described in the User Manual at https://github.com/BTNRH/chapro/blob/master/sigpro.pdf.
 
 Tests
 
-Describe and show how to run the tests with code examples.
+Test programs are provided to demonstrate several features of functions included in the library.
 
 Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Report bugs to Stephen.Neely@boystown.org.
 
 License
-
-A short snippet describing the license (MIT, Apache, etc.)
+Creative Commons?
 
