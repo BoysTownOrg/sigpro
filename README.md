@@ -20,7 +20,7 @@ Download repo from https://github.com/BTNRH/sigpro. Makefiles are provided for b
 
 API Reference
 
-The API is described in the User Manual at https://github.com/BTNRH/chapro/blob/master/sigpro.pdf.
+The API is described in the User Manual at https://github.com/BTNRH/sigpro/blob/master/sigpro.pdf.
 
 Tests
 
