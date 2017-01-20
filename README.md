@@ -35,7 +35,7 @@ Test programs are provided to demonstrate several features of functions included
     tst_src - test sampling-rate conversion
     tst_tb  - test tone-burst waveform calculation
     tst_wav - test WAV file read & write
-    tst_xfr - test transfer-function computaton
+    tst_xfr - test transfer-function computation
 
 Contributors
 
