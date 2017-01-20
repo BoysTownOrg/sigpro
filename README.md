@@ -24,7 +24,18 @@ The API is described in the User Manual at https://github.com/BTNRH/sigpro/blob/
 
 Tests
 
-Test programs are provided to demonstrate several features of functions included in the library.
+Test programs are provided to demonstrate several features of functions included in the library:
+
+    tst_afd - test analog-filter design
+    tst_cpx - test writing & reading complex data in MAT files
+    tst_fft - test real & complex FFT and inverse FFT
+    tst_mat - test MAT file save & load
+    tst_min - test fmins function
+    tst_shp - test frequency-shaping functions
+    tst_src - test sampling-rate conversion
+    tst_tb  - test tone-burst waveform calculation
+    tst_wav - test WAV file read & write
+    tst_xfr - test transfer-function computaton
 
 Contributors
 
