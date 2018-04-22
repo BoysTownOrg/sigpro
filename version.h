@@ -1,10 +1,12 @@
 /* version.h */
 
-#define VER     "SigPro version 0.33, 15-Nov-16"
-#define NOTICE	"Copyright 2005-2016 Boys Town National Research Hospital"
+#define VER     "SigPro version 0.34, 22-Apr-18"
+#define NOTICE	"Copyright 2005-2018 Boys Town National Research Hospital"
 #define RIGHTS	"Non-profit redistribution permitted."
 
 /**************************** change log **********************************
+0.34 - 22-Apr-18
+> Added function to copy a string into a variable list
 0.33 - 15-Nov-16
 > Cleaned up (matvar.c, tst_cpx.c, & rand.c) for MacOS
 0.32 - 21-Nov-15

@@ -422,6 +422,12 @@ FUNC(void) sp_var_set(      // set variable in list
     const char *frmt        // format string
 );
 
+FUNC(void) sp_var_str(      // set string in variable list
+    VAR *vl,                // variable list
+    const char *name,       // string name
+    const char *str         // string data
+);
+
 FUNC(int) sp_var_size(      // count variables in list
     VAR *vl                 // variable list
 );                          // -> number of variables

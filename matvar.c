@@ -1081,6 +1081,25 @@ FUNC(void) sp_var_set(
     }
 }
 
+FUNC(void) sp_var_str(
+    VAR *vl,
+    const char *name,
+    const char *str
+)
+{
+	int i, n;
+	float *data;
+
+	n = strlen(str);
+	data = (float *) calloc(n, sizeof(float));
+	for (i = 0; i < n; i++) {
+		data[i] = str[i];
+	}
+    sp_var_set(vl, "ifn", data, 1, n, "f4");
+	vl[0].text = 1;
+	free(data);
+}
+
 FUNC(int) sp_var_size(	    // count variables in list
     VAR *vl 		    // pointer to variable
 )
