@@ -1,6 +1,7 @@
 // sigpro.h - function prototypes for SIGPRO library
 #ifndef SIGPRO_H
 #define SIGPRO_H
+#include <stdint.h>
 
 #ifdef DLL
 #define FUNC(type) __declspec(dllexport) type _stdcall
@@ -11,7 +12,7 @@
 typedef struct {
     char *name;
     void *data;
-    long rows, cols;
+    int32_t rows, cols;
     char dtyp, cmpx, text, last;
 } VAR;
 
@@ -251,8 +252,8 @@ FUNC(int) sp_mat_append(    // appends variables to MAT file
 FUNC(VAR *) sp_mat_fetch(   // get variable from MAT file
     const char  *fn,        // file name
     char  *vn,		    // variable name
-    short *irc,		    // initial row & column
-    short *nrc		    // number of rows & columns
+    int16_t *irc,		    // initial row & column
+    int16_t *nrc		    // number of rows & columns
 );		            // -> variable list
 
 FUNC(VAR *) sp_mat_load(    // load variables in MAT file
@@ -296,7 +297,7 @@ FUNC(void) sp_randn(        // generate normal random values
 );
 
 FUNC(void) sp_randseed(     // set random number generator seed
-    unsigned long s         // seed
+    uint32_t s              // seed
 );
 
 FUNC(int) sp_rcfft(         // real-to-complex FFT
@@ -403,12 +404,12 @@ FUNC(void) sp_var_float(    // covert data to float
     VAR *vl                 // variable list
 );
 
-FUNC(short) sp_var_i2(      // get short value from variable
+FUNC(int16_t) sp_var_i2(    // get int16_t value from variable
     VAR *v,                 // variable list
     const char *vn          // variable name
 );
 
-FUNC(long) sp_var_i4(       // get long value from variable
+FUNC(int32_t) sp_var_i4(    // get int32_t value from variable
     VAR *v,                 // variable list
     const char *vn          // variable name
 );
@@ -417,8 +418,8 @@ FUNC(void) sp_var_set(      // set variable in list
     VAR *vl,                // variable list
     const char *name,       // variable name
     void *data,             // pointer to data array
-    long rows,              // number of rows
-    long cols,              // number of columns
+    int rows,               // number of rows
+    int cols,               // number of columns
     const char *frmt        // format string
 );
 

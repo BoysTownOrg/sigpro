@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
-#include <sigpro.h>
+#include "sigpro.h"
 
 void
 print_complex(float complex *a, char *sa, float complex *b, char *sb, int n)
