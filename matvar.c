@@ -68,7 +68,7 @@ static unsigned char *uncmp = NULL;
 /*............................ MAT READ  ................................*/
 
 typedef struct {
-    long data, next, nbyt, ofst, imag, rows, cols;
+    int32_t data, next, nbyt, ofst, imag, rows, cols;
     char type, text, cmpx, vers, bswp;
     char name[MAXNCH];
 } MATHDR;
@@ -97,7 +97,7 @@ mswab(char *a, int m, int n)
 static int
 cpu_lsb(int i)
 {
-    short   a = 1;
+    int16_t   a = 1;
     char   *b = (char *) (&a);
 
     return (b[i]);
@@ -128,7 +128,7 @@ ismat4(char *s, int bs)
 {
     char    typ[4];
     int     status = 0;
-    unsigned long   *hdr = (unsigned long *)s;
+    uint32_t   *hdr = (uint32_t *)s;
     
     if (bs)
 	mswab((char *) hdr, 4, 5);
@@ -155,9 +155,9 @@ ismat4(char *s, int bs)
 static int
 rdhdr5(FILE *fp, MATHDR *mh)
 {
-    long nc, nbd, ofst, gap;
-    unsigned long h[10];
-    unsigned short w[2];
+    int32_t nc, nbd, ofst, gap;
+    uint32_t h[10];
+    uint16_t w[2];
 
     if (fread(h, 4, 2, fp) < 2)
 	return (0);
@@ -279,7 +279,7 @@ static int
 rdhdr4(FILE *fp, MATHDR *mh)
 {
     int P, T, nbyt, ndat, nchr = 0;
-    unsigned long hdr[12];
+    uint32_t hdr[12];
     /* P= [0,1,2,3,4]=>[R*8,R*4,I*4,I*2,U*4] */
 
     if (fread(hdr, 4, 5, fp) < 5)
@@ -335,7 +335,7 @@ ismat(char *s, MATHDR *mh)
     if (ismat5(s)) {
 	mh->next = 128;
 	mh->vers = 5;
-	mh->bswp = ((short *)s)[62] & 0xFF;
+	mh->bswp = ((int16_t *)s)[62] & 0xFF;
     } else if (ismat4(s, 0)) {
 	mh->next = 0;
 	mh->vers = 4;
@@ -441,7 +441,7 @@ mat_name(const char *fn, VAR *vl, int nv)
 }
 
 static int
-rd_var(FILE *fp, MATHDR *mh, VAR *vl, short *irc, short *nrc)
+rd_var(FILE *fp, MATHDR *mh, VAR *vl, int16_t *irc, int16_t *nrc)
 {
     char *v, *w;
     int b, c, m, n, o, r, s, nr, nc;
@@ -516,7 +516,7 @@ rd_var(FILE *fp, MATHDR *mh, VAR *vl, short *irc, short *nrc)
 /* mat_fetch - read specified variable from MAT file */
 
 static int
-mat_fetch(const char *fn, VAR *vl, char *vn, short *irc, short *nrc)
+mat_fetch(const char *fn, VAR *vl, char *vn, int16_t *irc, int16_t *nrc)
 {
     char s[128];
     int i;
@@ -598,7 +598,7 @@ mat_read(const char *fn, VAR *vl, int nv)
  *	P= [0,1,2,3,4]=>[r*8,r*4,I*4,I*2,I*4 unsigned integers]
  *	T= 0 for matrix or 1 for text (stored as r*4 numbers 0<i<255).
  */
-static long
+static int32_t
 encode_mopt(int p, int t)
 {
     int     a = 1;
@@ -611,7 +611,7 @@ static void
 mat_wr(FILE *fp, char *nam, void *d, int r, int c, int dtyp, int txt, int cx)
 {
     int     sz, sw, ne;
-    long    ns, hdr[5];
+    int32_t    ns, hdr[5];
     static int bo = 1; // desired byte order: 0=BE, 1=LE 
 
     ns = strlen(nam) + 1;
@@ -701,8 +701,8 @@ var_verify(VAR *vl)
 FUNC(VAR *) sp_mat_fetch(
     const char  *fn,
     char  *vn,
-    short *irc,
-    short *nrc
+    int16_t *irc,
+    int16_t *nrc
 )
 {
     VAR *vl;
@@ -902,11 +902,11 @@ FUNC(void) sp_var_float(
     double *f8;
     float *f4;
     int i, j, n;
-    long *i4;
-    short *i2;
+    int32_t *i4;
+    int16_t *i2;
     unsigned char *u1;
-    unsigned long *u4;
-    unsigned short *u2;
+    uint32_t *u4;
+    uint16_t *u2;
 
     for(i = 0; i < SP_MAXVAR; i++) {
 	n = vl[i].rows * vl[i].cols;
@@ -931,7 +931,7 @@ FUNC(void) sp_var_float(
 	    vl[i].data = f4;
 	    break;
 	case 3:		// int*2
-	    i2 = (short *) vl[i].data;
+	    i2 = (int16_t *) vl[i].data;
 	    f4 = (float *) calloc(n, sizeof(float));
 	    for (j = 0; j < n; j++) {
 		f4[j] = (float) i2[j];
@@ -940,7 +940,7 @@ FUNC(void) sp_var_float(
 	    vl[i].data = f4;
 	    break;
 	case 4:		// uint*2
-	    u2 = (unsigned short *) vl[i].data;
+	    u2 = (uint16_t *) vl[i].data;
 	    f4 = (float *) calloc(n, sizeof(float));
 	    for (j = 0; j < n; j++) {
 		f4[j] = (float) u2[j];
@@ -949,7 +949,7 @@ FUNC(void) sp_var_float(
 	    vl[i].data = f4;
 	    break;
 	case 5:		// int*4
-	    i4 = (long *) vl[i].data;
+	    i4 = (int32_t *) vl[i].data;
 	    f4 = (float *) calloc(n, sizeof(float));
 	    for (j = 0; j < n; j++) {
 		f4[j] = (float) i4[j];
@@ -958,7 +958,7 @@ FUNC(void) sp_var_float(
 	    vl[i].data = f4;
 	    break;
 	case 6:		// uint*4
-	    u4 = (unsigned long *) vl[i].data;
+	    u4 = (uint32_t *) vl[i].data;
 	    f4 = (float *) calloc(n, sizeof(float));
 	    for (j = 0; j < n; j++) {
 		f4[j] = (float) u4[j];
@@ -987,8 +987,8 @@ FUNC(void) sp_var_set(
     VAR *vl,
     const char *name,
     void *data,
-    long rows,
-    long cols,
+    int32_t rows,
+    int32_t cols,
     const char *frmt
 )
 {
@@ -1145,22 +1145,22 @@ sp_var_f8(VAR *v, const char *vn)
     return *((double *) v[i].data);
 }
 
-FUNC(short)
+FUNC(int16_t)
 sp_var_i2(VAR *v, const char *vn)
 {
     int i;
 
     i = sp_var_find(v, vn);
-    return *((short *) v[i].data);
+    return *((int16_t *) v[i].data);
 }
 
-FUNC(long)
+FUNC(int32_t)
 sp_var_i4(VAR *v, const char *vn)
 {
     int i;
 
     i = sp_var_find(v, vn);
-    return *((long *) v[i].data);
+    return *((int32_t *) v[i].data);
 }
 
 FUNC(char *)

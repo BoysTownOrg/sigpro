@@ -1,16 +1,17 @@
 // rand.c
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 #include "sigpro.h"
 
 // simple generator initializes MT generator
 #define _SET(s)  (js=s)
 #define _IUNI	(jz=js,js^=(js<<13),js^=(js>>17),js^=(js<<5),jz+js)
-#define ulabs(x) ((unsigned long)labs(x))
+#define ulabs(x) ((uint32_t)labs(x))
 
-static unsigned long js = 123456789;
-static unsigned long jz = 0;
+static uint32_t js = 123456789;
+static uint32_t jz = 0;
 
 //-----------------------------------------------------------
 
@@ -29,9 +30,9 @@ static unsigned long jz = 0;
 #define MAGIC(s)        (((s)&1)*MATRIX_A)
 
 static int mt_index = -1;
-static unsigned long mt_buffer[MT_LEN];
+static uint32_t mt_buffer[MT_LEN];
 
-void mt_init(unsigned long s) {
+void mt_init(uint32_t s) {
     int i;
 
     _SET(s);
@@ -41,16 +42,16 @@ void mt_init(unsigned long s) {
     mt_index = 0;
 }
 
-unsigned long mt_random() {
-    unsigned long * b = mt_buffer;
-    unsigned long s;
+uint32_t mt_random() {
+    uint32_t * b = mt_buffer;
+    uint32_t s;
     int i, idx;
 	
     if (mt_index < 0) {
 	mt_init(js);
     }
     idx = mt_index;
-    if (idx == MT_LEN * sizeof(unsigned long)) {
+    if (idx == MT_LEN * sizeof(uint32_t)) {
         idx = 0;
         i = 0;
         for (; i < MT_IB; i++) {
@@ -64,8 +65,8 @@ unsigned long mt_random() {
         s = TWIST(b, MT_LEN-1, 0);
         b[MT_LEN-1] = b[MT_IA-1] ^ (s >> 1) ^ MAGIC(s);
     }
-    mt_index = idx + sizeof(unsigned long);
-    return (*(unsigned long *)((unsigned char *)b + idx));
+    mt_index = idx + sizeof(uint32_t);
+    return (*(uint32_t *)((unsigned char *)b + idx));
 }
 
 //-----------------------------------------------------------
@@ -74,8 +75,8 @@ unsigned long mt_random() {
 #define RNOR	(hz=IUNI, iz=hz&127, (ulabs(hz)<kn[iz])? hz*wn[iz] : nfix())
 
 static double wn[128],fn[128];
-static long hz;
-static unsigned long iz, kn[128];
+static int32_t hz;
+static uint32_t iz, kn[128];
 
 /* zigset - sets the seed and creates the tables */
 
@@ -167,7 +168,7 @@ FUNC(void) sp_randn(float *x, int n)
     }
 }
 
-FUNC(void) sp_randseed(unsigned long s) 
+FUNC(void) sp_randseed(uint32_t s) 
 {
     SET(s);
 }
