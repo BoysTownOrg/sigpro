@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <math.h>
 #include <sys/stat.h>
@@ -37,33 +38,33 @@
 #define MINWAV 36
 
 typedef struct {
-    short   format;
-    short   channels;
-    long    samp_sec;
-    long    byte_sec;
-    short   block_align;
-    short   bits_smp;
+    int16_t   format;
+    int16_t   channels;
+    int32_t    samp_sec;
+    int32_t    byte_sec;
+    int16_t   block_align;
+    int16_t   bits_smp;
 }       WAV_fmt;
 
 static WAV_fmt wav_hdr; 
-static long     dat_pos;
+static int32_t     dat_pos;
 
-static long
+static int32_t
 read_long(int fd)
 {
-    long n;
+    int32_t n;
 
-   (void) _read(fd, &n, sizeof(long));
+   (void) _read(fd, &n, sizeof(int32_t));
 
    return (n);
 }
 
-static short
+static int16_t
 read_short(int fd)
 {
-    short n;
+    int16_t n;
 
-   (void) _read(fd, &n, sizeof(short));
+   (void) _read(fd, &n, sizeof(int16_t));
 
    return (n);
 }
@@ -73,7 +74,7 @@ wav_head(const char *fn, VAR *vl, float *fs)
 {
     char    id[MINWAV];
     int     fd, status;
-    long    fmtsz, datsz, smpsz, frmsz, fpos, size;
+    int32_t    fmtsz, datsz, smpsz, frmsz, fpos, size;
 
     if (vl == NULL) {
 	return(-1);
@@ -136,7 +137,7 @@ wav_load(const char *fn, VAR *vl, int *ifr, int *nfr)
     char    bv;
     float  *f, sclf;
     int     fd, i;
-    long    smpsz, nchn, ifrm, nfrm, nsmp, lv;
+    int32_t    smpsz, nchn, ifrm, nfrm, nsmp, lv;
 
     if (vl == NULL) {
 	return;
@@ -192,11 +193,11 @@ write_data_1(int fd, VAR *vl)
     double *f8, sc;
     float *f4;
     int j, m, n;
-    long *i4;
-    short *i2;
+    int32_t *i4;
+    int16_t *i2;
     unsigned char *u1;
-    unsigned long *u4;
-    unsigned short *u2;
+    uint32_t *u4;
+    uint32_t *u2;
 
     n = vl[0].rows * vl[0].cols;
     n = vl[0].cmpx ? 2 * n : n;
@@ -214,26 +215,26 @@ write_data_1(int fd, VAR *vl)
         }
         break;
     case 3:		// int*2
-        i2 = (short *) vl[0].data;
+        i2 = (int16_t *) vl[0].data;
         for (j = 0; j < n; j++) {
     	    i1[j] = (char) (i2[j] >> 8);
         }
         break;
     case 4:		// uint*2
-        u2 = (unsigned short *) vl[0].data;
+        u2 = (uint32_t *) vl[0].data;
         m = 1 << 15;
         for (j = 0; j < n; j++) {
     	    i1[j] = (char) ((u2[j] - m) >> 8);
         }
         break;
     case 5:		// int*4
-        i4 = (long *) vl[0].data;
+        i4 = (int32_t *) vl[0].data;
         for (j = 0; j < n; j++) {
     	    i1[j] = (char) (i4[j] >> 24);
         }
         break;
     case 6:		// uint*4
-        u4 = (unsigned long *) vl[0].data;
+        u4 = (uint32_t *) vl[0].data;
         m = 1 << 31;
         for (j = 0; j < n; j++) {
     	    i1[j] = (char) ((u4[j] - m) >> 24);
@@ -267,70 +268,70 @@ write_data_2(int fd, VAR *vl)
     double *f8, sc;
     float *f4;
     int j, m, n;
-    long *i4;
-    short *i2;
+    int32_t *i4;
+    int16_t *i2;
     unsigned char *u1;
-    unsigned long *u4;
-    unsigned short *u2;
+    uint32_t *u4;
+    uint32_t *u2;
 
     n = vl[0].rows * vl[0].cols;
     n = vl[0].cmpx ? 2 * n : n;
     // convert VAR data to short array
-    i2 = (short *) calloc(n, sizeof(short));
+    i2 = (int16_t *) calloc(n, sizeof(int16_t));
     switch (vl[0].dtyp) {
     case 1:		// int*1
         i1 = (char *) vl[0].data;
         for (j = 0; j < n; j++) {
-    	    i2[j] = (short) i1[j] << 8;
+    	    i2[j] = (int16_t) i1[j] << 8;
         }
         break;
     case 2:		// uint*1
         u1 = (unsigned char *) vl[0].data;
         m = 1 << 7;
         for (j = 0; j < n; j++) {
-    	    i2[j] = (short) (u1[j] - m) << 8;
+    	    i2[j] = (int16_t) (u1[j] - m) << 8;
         }
         break;
     case 3:		// int*2
-	memcpy(i2, vl[0].data, n * sizeof(short));
+	memcpy(i2, vl[0].data, n * sizeof(int16_t));
         break;
     case 4:		// uint*2
-        u2 = (unsigned short *) vl[0].data;
+        u2 = (uint32_t *) vl[0].data;
         m = 1 << 15;
         for (j = 0; j < n; j++) {
-    	    i2[j] = (short) (u2[j] - m);
+    	    i2[j] = (int16_t) (u2[j] - m);
         }
         break;
     case 5:		// int*4
-        i4 = (long *) vl[0].data;
+        i4 = (int32_t *) vl[0].data;
         for (j = 0; j < n; j++) {
-    	    i2[j] = (short) (i4[j] >> 16);
+    	    i2[j] = (int16_t) (i4[j] >> 16);
         }
         break;
     case 6:		// uint*4
-        u4 = (unsigned long *) vl[0].data;
+        u4 = (uint32_t *) vl[0].data;
         m = 1 << 31;
         for (j = 0; j < n; j++) {
-    	    i2[j] = (short) ((u4[j] - m) >> 16);
+    	    i2[j] = (int16_t) ((u4[j] - m) >> 16);
         }
         break;
     case 8:		// float*4
         f4 = (float *) vl[0].data;
 	sc = pow(2.0, 15.0) - 1;
         for (j = 0; j < n; j++) {
-	    i2[j] = (short) (limit(-1, f4[j], 1) * sc);
+	    i2[j] = (int16_t) (limit(-1, f4[j], 1) * sc);
         }
         break;
     case 9:		// float*8
         f8 = (double *) vl[0].data;
 	sc = pow(2.0, 15.0) - 1;
         for (j = 0; j < n; j++) {
-	    i2[j] = (short) (limit(-1, f8[j], 1) * sc);
+	    i2[j] = (int16_t) (limit(-1, f8[j], 1) * sc);
         }
         break;
     }
     // write short array to file
-    _write(fd, i2, n * sizeof(short));
+    _write(fd, i2, n * sizeof(int16_t));
     free(i2);
 }
 
@@ -341,51 +342,51 @@ write_data_4(int fd, VAR *vl)
     double *f8, sc;
     float *f4;
     int j, m, n;
-    long *i4;
-    short *i2;
+    int32_t *i4;
+    int16_t *i2;
     unsigned char *u1;
-    unsigned long *u4;
-    unsigned short *u2;
+    uint32_t *u4;
+    uint32_t *u2;
 
     n = vl[0].rows * vl[0].cols;
     n = vl[0].cmpx ? 2 * n : n;
     // convert VAR data to long array
-    i4 = (long *) calloc(n, sizeof(long));
+    i4 = (int32_t *) calloc(n, sizeof(int32_t));
     switch (vl[0].dtyp) {
     case 1:		// int*1
         i1 = (char *) vl[0].data;
         for (j = 0; j < n; j++) {
-    	    i4[j] = (long) i1[j] << 24;
+    	    i4[j] = (int32_t) i1[j] << 24;
         }
         break;
     case 2:		// uint*1
         u1 = (unsigned char *) vl[0].data;
         m = 1 << 7;
         for (j = 0; j < n; j++) {
-    	    i4[j] = (long) (u1[j] - m) << 24;
+    	    i4[j] = (int32_t) (u1[j] - m) << 24;
         }
         break;
     case 3:		// int*2
-        i2 = (short *) vl[0].data;
+        i2 = (int16_t *) vl[0].data;
         for (j = 0; j < n; j++) {
-    	    i4[j] = (long) i2[j] << 16;
+    	    i4[j] = (int32_t) i2[j] << 16;
         }
         break;
     case 4:		// uint*2
-        u2 = (unsigned short *) vl[0].data;
+        u2 = (uint32_t *) vl[0].data;
         m = 1 << 15;
         for (j = 0; j < n; j++) {
-    	    i4[j] = (long) (u2[j] - m) << 16;
+    	    i4[j] = (int32_t) (u2[j] - m) << 16;
         }
         break;
     case 5:		// int*4
-	memcpy(i4, vl[0].data, n * sizeof(long));
+	memcpy(i4, vl[0].data, n * sizeof(int32_t));
         break;
     case 6:		// uint*4
-        u4 = (unsigned long *) vl[0].data;
+        u4 = (uint32_t *) vl[0].data;
         m = 1 << 31;
         for (j = 0; j < n; j++) {
-    	    i4[j] = (long) (u4[j] - m);
+    	    i4[j] = (int32_t) (u4[j] - m);
         }
         break;
     case 7:		// float*4
@@ -393,19 +394,19 @@ write_data_4(int fd, VAR *vl)
         f4 = (float *) vl[0].data;
 	sc = pow(2.0, 31.0) - 1;
         for (j = 0; j < n; j++) {
-	    i4[j] = (long) (limit(-1, f4[j], 1) * sc);
+	    i4[j] = (int32_t) (limit(-1, f4[j], 1) * sc);
         }
         break;
     case 9:		// float*8
         f8 = (double *) vl[0].data;
 	sc = pow(2.0, 31.0) - 1;
         for (j = 0; j < n; j++) {
-	    i4[j] = (long) (limit(-1, f8[j], 1) * sc);
+	    i4[j] = (int32_t) (limit(-1, f8[j], 1) * sc);
         }
         break;
     }
     // write long array to file
-    _write(fd, i4, n * sizeof(long));
+    _write(fd, i4, n * sizeof(int32_t));
     free(i4);
 }
 
@@ -426,7 +427,7 @@ save_wav(const char *fn, VAR *vl, float *fs, int nbits)
 {
     char    z = 0;
     int     fd, nbps, nchn, nsmp;
-    long    rifsz, fmtsz, datsz;
+    int32_t    rifsz, fmtsz, datsz;
     WAV_fmt wfmt;
 
     fd = _open(fn, OFLAG, PMODE);		// open the file
@@ -438,7 +439,7 @@ save_wav(const char *fn, VAR *vl, float *fs, int nbits)
     nbps = (nbits + 7) / 8;
     wfmt.format = 1;		/* PCM */
     wfmt.channels = nchn;
-    wfmt.samp_sec = (long) (*fs);
+    wfmt.samp_sec = (int32_t) (*fs);
     wfmt.block_align = nbps * nchn;
     wfmt.bits_smp = nbits;
     wfmt.byte_sec = wfmt.samp_sec * nchn * nbps;
