@@ -418,8 +418,8 @@ FUNC(void) sp_var_set(      // set variable in list
     VAR *vl,                // variable list
     const char *name,       // variable name
     void *data,             // pointer to data array
-    int rows,               // number of rows
-    int cols,               // number of columns
+    int32_t rows,           // number of rows
+    int32_t cols,           // number of columns
     const char *frmt        // format string
 );
 
