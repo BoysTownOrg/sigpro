@@ -297,7 +297,7 @@ FUNC(void) sp_randn(        // generate normal random values
 );
 
 FUNC(void) sp_randseed(     // set random number generator seed
-    uint32_t s              // seed
+    unsigned long s              // seed
 );
 
 FUNC(int) sp_rcfft(         // real-to-complex FFT
@@ -409,7 +409,7 @@ FUNC(int16_t) sp_var_i2(    // get int16_t value from variable
     const char *vn          // variable name
 );
 
-FUNC(int32_t) sp_var_i4(    // get int32_t value from variable
+FUNC(long) sp_var_i4(    // get int32_t value from variable
     VAR *v,                 // variable list
     const char *vn          // variable name
 );
@@ -418,8 +418,8 @@ FUNC(void) sp_var_set(      // set variable in list
     VAR *vl,                // variable list
     const char *name,       // variable name
     void *data,             // pointer to data array
-    int32_t rows,           // number of rows
-    int32_t cols,           // number of columns
+    long rows,           // number of rows
+    long cols,           // number of columns
     const char *frmt        // format string
 );
 
