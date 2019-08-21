@@ -18,8 +18,8 @@ libsigpro.a: $(SIGPRO_O)
 	$(AR) rs libsigpro.a $(SIGPRO_O)
 
 $(LIBDIR)/libsigpro.a : libsigpro.a
-	mkdir -p $(LIBDIR)
-	cp -f libsigpro.a $(LIBDIR)
+	sudo mkdir -p $(LIBDIR)
+	sudo cp -f libsigpro.a $(LIBDIR)
 
 install: $(LIBDIR)/libsigpro.a 
 
