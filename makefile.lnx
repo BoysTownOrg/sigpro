@@ -69,12 +69,12 @@ $(LIBDIR)/libsigpro.a : libsigpro.a
 	cp -f libsigpro.a $(LIBDIR)
 
 $(INCDIR)/sigpro.h : sigpro.h
-	mkdir -p $(INCDIR)
-	cp -f sigpro.h $(INCDIR)
+	sudo mkdir -p $(INCDIR)
+	sudo cp -f sigpro.h $(INCDIR)
 
 $(BINDIR)/rdmat : rdmat
-	mkdir -p $(BINDIR)
-	cp -f rdmat $(BINDIR)
+	sudo mkdir -p $(BINDIR)
+	sudo cp -f rdmat $(BINDIR)
 
 install: $(BINDIR)/rdmat $(LIBDIR)/libsigpro.a $(INCDIR)/sigpro.h
 
