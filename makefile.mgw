@@ -63,9 +63,9 @@ rdmat : rdmat.o libsigpro.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 libsigpro.a: $(SIGPRO_O) 
-	$(AR) rus libsigpro.a $(SIGPRO_1)
-	$(AR) rus libsigpro.a $(SIGPRO_2)
-	$(AR) rus libsigpro.a $(SIGPRO_3)
+	$(AR) rs libsigpro.a $(SIGPRO_1)
+	$(AR) rs libsigpro.a $(SIGPRO_2)
+	$(AR) rs libsigpro.a $(SIGPRO_3)
 
 install: libsigpro.a rdmat
 	cp -f libsigpro.a $(LIBDIR)
