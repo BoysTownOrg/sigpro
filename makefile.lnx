@@ -1,7 +1,7 @@
 # makefile for SIGPRO under Linux
 
-# remove -DZLIB & -lz to compile without zlib
-CFLAGS=-Wall -I$(INCDIR) -DZLIB
+# Note: remove -DZLIB & -lz to compile without zlib
+CFLAGS=-Wall -I$(INCDIR) -DZLIB -fPIC
 LIBS=-lm -lz
 CC=gcc
 AR=ar

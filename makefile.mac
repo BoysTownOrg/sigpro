@@ -1,6 +1,6 @@
 # makefile for SIGPRO on Mac
 
-# remove -DZLIB & -lz to compile without zlib
+# Note: remove -DZLIB & -lz to compile without zlib
 CFLAGS=-Wall -I$(INCDIR) -DZLIB
 LIBS=-lm -lz
 CC=gcc

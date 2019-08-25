@@ -1,7 +1,7 @@
 # makefile for SIGPRO cross-compilation to Linux/ARM
 
-# remove -DZLIB & -lz to compile without zlib
-CFLAGS=-Wall -I$(INCDIR)
+# Note: remove -DZLIB & -lz to compile without zlib
+CFLAGS=-Wall -I$(INCDIR) -fPIC
 LIBS=-lm
 CC=arm-linux-gnueabihf-gcc
 AR=arm-linux-gnueabihf-ar

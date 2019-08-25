@@ -1,11 +1,9 @@
 # makefile for SIGPRO using MinGW
 
-# remove -DZLIB & -lz to compile without zlib
-#CFLAGS=-Wall -I$(INCDIR) -DZLIB
-#LIBS=-lm -lz
-CFLAGS=-Wall -I$(INCDIR)
-LIBS=-lm
+# Note: remove -DZLIB & -lz to compile without zlib
+CFLAGS=-Wall -I$(INCDIR) -DZLIB
 
+LIBS=-lm -lz
 CC=gcc
 AR=ar
 SIGPRO_1= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o
