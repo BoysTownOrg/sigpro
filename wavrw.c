@@ -423,10 +423,10 @@ write_data(int fd, VAR *vl, int nbits)
 }
 
 static int
-save_wav(const char *fn, VAR *vl, float *fs, int nbits)
+save_wav(const char *fn, VAR *vl, float *fs, int nbits, int nreps)
 {
     char    z = 0;
-    int     fd, nbps, nchn, nsmp;
+    int     fd, i, nbps, nchn, nsmp;
     int32_t    rifsz, fmtsz, datsz;
     WAV_fmt wfmt;
 
@@ -443,7 +443,7 @@ save_wav(const char *fn, VAR *vl, float *fs, int nbits)
     wfmt.block_align = nbps * nchn;
     wfmt.bits_smp = nbits;
     wfmt.byte_sec = wfmt.samp_sec * nchn * nbps;
-    datsz = nsmp * nchn * nbps;
+    datsz = nsmp * nchn * nbps * nreps;
     fmtsz = sizeof(wfmt);
     rifsz = 5 * 4 + fmtsz + datsz + (datsz % 2);
     _write(fd, "RIFF", 4);
@@ -454,7 +454,9 @@ save_wav(const char *fn, VAR *vl, float *fs, int nbits)
     _write(fd, (char *) &wfmt, (unsigned) fmtsz);
     _write(fd, "data", 4);
     _write(fd, (char *) &datsz, 4);
-    write_data(fd, vl, nbits);
+    for (i = 0; i < nreps; i++) {
+        write_data(fd, vl, nbits);
+    }
     if (datsz % 2) {
         _write(fd, (char *) &z, 1);
     }
@@ -506,7 +508,18 @@ FUNC(int) sp_wav_write(
     int    nbits        // number of bits
 )
 {
-    return save_wav(fn, vl, fs, nbits);
+    return save_wav(fn, vl, fs, nbits, 1);
+}
+
+FUNC(int) sp_wav_write_rep(
+    const char  *fn,	// file name
+    VAR   *vl,		// variable list
+    float *fs,		// sampling rate
+    int    nbits,       // number of bits
+    int    nreps        // number of repetitions
+)
+{
+    return save_wav(fn, vl, fs, nbits, nreps);
 }
 
 /*..........................................................................*/

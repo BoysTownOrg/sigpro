@@ -479,6 +479,14 @@ FUNC(int) sp_wav_write(     // write WAV file data
     int    nbits            // number of bits
 );                          // -> error code
 
+FUNC(int) sp_wav_write_rep(     // write WAV file data
+    const char  *fn,        // file name
+    VAR   *vl,              // variable list
+    float *fs,              // sampling rate
+    int    nbits,           // number of bits
+    int    nreps            // number of repetitions
+);                          // -> error code
+
 FUNC(int) sp_window(        // waveform window
     float   *y,             // output array
     int      n,             // array size

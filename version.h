@@ -1,10 +1,14 @@
 /* version.h */
 
-#define VER     "SigPro version 0.34, 22-Apr-18"
-#define NOTICE	"Copyright 2005-2018 Boys Town National Research Hospital"
+#define VER     "SigPro version 0.36, 25-Aug-19"
+#define NOTICE	"Copyright 2005-2019 Boys Town National Research Hospital"
 #define RIGHTS	"Non-profit redistribution permitted."
 
 /**************************** change log **********************************
+0.36 - 25-Aug-19
+> Added function sp_wav_write_rep
+0.35 - 24-Jun-18
+> Fixed VAR struct and MAT files for 64-bit Linux
 0.34 - 22-Apr-18
 > Added function to copy a string into a variable list
 0.33 - 15-Nov-16

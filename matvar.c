@@ -170,6 +170,8 @@ rdhdr5(FILE *fp, MATHDR *mh)
 	mh->data = mh->next + 8;
         mh->vers = 6;
 #else
+#undef FAR
+#define FAR
 #include <zlib.h>
 	Bytef *compr;
 	uLongf nbc, nbu;
