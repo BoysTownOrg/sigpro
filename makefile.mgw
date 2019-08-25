@@ -1,7 +1,7 @@
 # makefile for SIGPRO using MinGW
 
 # Note: remove -DZLIB & -lz to compile without zlib
-CFLAGS=-Wall -I$(INCDIR) -DZLIB
+CFLAGS=-Wall -I$(INCDIR) -Wunused-local-typedefs -DZLIB 
 
 LIBS=-lm -lz
 CC=gcc
