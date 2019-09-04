@@ -31,7 +31,7 @@ zipsrc:
 
 clean:
 	rm -f *.o *.obj *.bak *.a *.exe $(PGMS)
-	rm -f *.txt *.log *.mat *~ *.wav
+	rm -f *.txt *.log *.mat *~ *.wav *.so
 
 # dependencies
 anafilt.o:sigpro.h

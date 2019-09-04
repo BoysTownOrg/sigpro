@@ -90,7 +90,7 @@ dist: zipsrc zipdll
 	rm -f *.zip
 
 clean:
-	rm -f *.o *.obj *.bak *.a *.exe $(PGMS) *.txt *.log *.mat *~ *.wav
+	rm -f *.o *.obj *.bak *.a *.exe $(PGMS) *.txt *.log *.mat *~ *.wav *.so
 
 # dependencies
 anafilt.o:sigpro.h
