@@ -65,16 +65,16 @@ libsigpro.a: $(SIGPRO_O)
 	$(AR) rs libsigpro.a $(SIGPRO_O)
 
 $(LIBDIR)/libsigpro.a : libsigpro.a
-	sudo mkdir -p $(LIBDIR)
-	sudo cp -f libsigpro.a $(LIBDIR)
+	mkdir -p $(LIBDIR)
+	cp -f libsigpro.a $(LIBDIR)
 
 $(INCDIR)/sigpro.h : sigpro.h
-	sudo mkdir -p $(INCDIR)
-	sudo cp -f sigpro.h $(INCDIR)
+	mkdir -p $(INCDIR)
+	cp -f sigpro.h $(INCDIR)
 
 $(BINDIR)/rdmat : rdmat
-	sudo mkdir -p $(BINDIR)
-	sudo cp -f rdmat $(BINDIR)
+	mkdir -p $(BINDIR)
+	cp -f rdmat $(BINDIR)
 
 install: $(BINDIR)/rdmat $(LIBDIR)/libsigpro.a $(INCDIR)/sigpro.h
 
