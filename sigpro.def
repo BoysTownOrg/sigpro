@@ -44,6 +44,7 @@ EXPORTS sp_cdb
 	sp_toc
 	sp_vadd
 	sp_var_alloc
+	sp_var_add
 	sp_var_clear
 	sp_var_clear_all
 	sp_var_copy
@@ -54,8 +55,8 @@ EXPORTS sp_cdb
 	sp_var_float
 	sp_var_i2
 	sp_var_i4
+	sp_var_idx
 	sp_var_set
-	sp_var_str
 	sp_var_size
 	sp_version
 	sp_vdot
