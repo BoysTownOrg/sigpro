@@ -423,11 +423,18 @@ FUNC(void) sp_var_set(      // set variable in list
     const char *frmt        // format string
 );
 
-FUNC(void) sp_var_str(      // set string in variable list
+FUNC(void) sp_var_add(      // add variable to list
     VAR *vl,                // variable list
-    const char *name,       // string name
-    const char *str         // string data
+    const char *name,       // variable name
+    void *data,             // pointer to data array
+    int32_t rows,           // number of rows
+    int32_t cols,           // number of columns
+    const char *frmt        // format string
 );
+
+FUNC(int) sp_var_idx(       // find empty variable
+    VAR *vl                 // variable list
+);                          // -> index
 
 FUNC(int) sp_var_size(      // count variables in list
     VAR *vl                 // variable list

@@ -698,6 +698,24 @@ var_verify(VAR *vl)
     return (0);
 }
 
+static void
+var_string(VAR *vl, const char *name, void *strptr)
+{
+    char *s;
+    float *data;
+    int i, n;
+
+    s = (char *) strptr;
+    n = strlen(s);
+    data = (float *) calloc(n, sizeof(float));
+    for (i = 0; i < n; i++) {
+        data[i] = s[i];
+    }
+    sp_var_set(vl, name, data, 1, n, "f4");
+    vl[0].text = 1;
+    free(data);
+}
+
 /*..........................................................................*/
 
 FUNC(VAR *) sp_mat_fetch(
@@ -825,7 +843,7 @@ FUNC(VAR *) sp_var_alloc(
     VAR *vl;
 
     vl = (VAR *) calloc(nvar, sizeof(VAR));
-    vl[nvar-1].last = 1;
+    vl[nvar - 1].last = 1;
     if (!vrl) {
 	vrl = (VRL *) calloc(nvlsiz, sizeof(VRL));
 	nvl = 0;
@@ -1002,6 +1020,10 @@ FUNC(void) sp_var_set(
     if (!var_verify(vl)) {
 	return;
     }
+    if (strncmp(frmt, "f4str", 5) == 0) {
+        var_string(vl, name, data);
+	return;
+    }
     t = strchr(frmt, 'T') || strchr(frmt, 't');
     c = strchr(frmt, 'C') || strchr(frmt, 'c');
     vl->name = _strdup(name);
@@ -1083,23 +1105,37 @@ FUNC(void) sp_var_set(
     }
 }
 
-FUNC(void) sp_var_str(
-    VAR *vl,
-    const char *name,
-    const char *str
+FUNC(int) sp_var_idx(
+    VAR *vl 
 )
 {
-	int i, n;
-	float *data;
+    int i;
 
-	n = strlen(str);
-	data = (float *) calloc(n, sizeof(float));
-	for (i = 0; i < n; i++) {
-		data[i] = str[i];
+    for (i = 0; i < SP_MAXVAR; i++) {
+	if (vl[i].name == NULL) {
+            break;
+        }
+	if (vl[i].last) {
+            i = -1; // variable list full
+	    break;
 	}
-    sp_var_set(vl, "ifn", data, 1, n, "f4");
-	vl[0].text = 1;
-	free(data);
+    }
+    return (i);
+}
+
+FUNC(void) sp_var_add(
+    VAR *vl,
+    const char *name,
+    void *data,
+    int32_t rows,
+    int32_t cols,
+    const char *frmt
+)
+{
+    int idx;
+ 
+    idx = sp_var_idx(vl);
+    sp_var_set(vl + idx, name, data, rows, cols, frmt);
 }
 
 FUNC(int) sp_var_size(	    // count variables in list
