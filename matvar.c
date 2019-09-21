@@ -1053,7 +1053,10 @@ FUNC(void) sp_var_set(
 	    nbyt = bs4[3];
 	}
     } else if (strchr(frmt, 'U') || strchr(frmt, 'u')) {
-	if (strchr(frmt, '4')) {
+	if (strchr(frmt, '1')) {
+	    vl->dtyp = SP_DTYP_U1;
+	    nbyt = rows * cols;
+	} else if (strchr(frmt, '4')) {
 	    vl->dtyp = dt5[4];
 	    nbyt = bs4[4];
 	} else {
