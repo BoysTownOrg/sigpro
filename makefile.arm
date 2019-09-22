@@ -1,54 +1,88 @@
-# makefile for SIGPRO cross-compilation to Linux/ARM
+# makefile for CHAPRO cross-compilation to Linux/ARM
+# Library requirement: sigpro
+# Package requirement: gcc-arm-linux-gnueabihf
 
-# Note: remove -DZLIB & -lz to compile without zlib
-CFLAGS=-Wall -I$(INCDIR) -Wno-unused-local-typedef -fPIC
-LIBS=-lm
+LIBS=-lsigpro -lm
+SCLIB=-larsc -lasound $(LIBS)
 CC=arm-linux-gnueabihf-gcc
 AR=arm-linux-gnueabihf-ar
-SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
-    fftfilt.o freqshape.o scalar.o vector.o interp.o convert.o window.o \
-    matvar.o filter.o anafilt.o wavrw.o fmins.o version.o tictoc.o
+
+CFLAGS=-Wall -Wno-unknown-pragmas -I$(INCDIR) -fPIC -O3
+LFLAGS=-L$(LIBDIR)
+
 LIBDIR=/usr/local/lib/arm
 INCDIR=/usr/local/include
-TST= rdmat tst_fft tst_shp tst_src tst_mat tst_wav tst_afd tst_xfr tst_min \
-    tst_cpx tst_tb
+BINDIR=
 
-libsigpro.a: $(SIGPRO_O)
-	$(AR) rs libsigpro.a $(SIGPRO_O)
+CHAPRO=cha_core.o cha_scale.o db.o fft.o rfft.o \
+	agc_prepare.o agc_process.o \
+	cfirfb_prepare.o cfirfb_process.o \
+	firfb_prepare.o firfb_process.o \
+	iirfb_design.o iirfb_prepare.o iirfb_process.o \
+	ciirfb_design.o ciirfb_prepare.o ciirfb_process.o \
+	afc_prepare.o afc_process.o \
+	icmp_prepare.o icmp_process.o
+PGMS=tst_bbb
 
-$(LIBDIR)/libsigpro.a : libsigpro.a
+all: $(PGMS)
+
+tst_bbb : tst_bbb.o  libchapro.a
+	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) 
+
+libchapro.a: $(CHAPRO)
+	$(AR) rs libchapro.a $(CHAPRO)
+
+$(LIBDIR)/libchapro.a : libchapro.a
 	mkdir -p $(LIBDIR)
-	cp -f libsigpro.a $(LIBDIR)
+	cp -f libchapro.a $(LIBDIR)
 
-install: $(LIBDIR)/libsigpro.a 
+install: $(LIBDIR)/libchapro.a $(PGMS)
+	scp $(PGMS) mha@192.168.7.2:/home/mha
 
 zipsrc:
-	zip sigprosc *.mgw *.lnx *.mac
-	zip sigprosc *.h *.c *.plt *.std *.m *.def
-	zip sigprosc VS9/*.sln VS9/*.vcpro test/*.mat
-	zip sigprosc configure configure.bat
+	zip chaprosc *.mgw *.lnx *.mac
+	zip chaprosc *.h *.c *.m *.def
+	zip chaprosc VS9/*.sln VS9/*.vcproj test/cat.wav
+	zip chaprosc configure configure.bat 
+	zip chaprosc compress.bat suppress.bat shacmp.bat
+
+dist: zipsrc 
+	cp -f chapr*.zip ../dist
+	rm -f *.zip
 
 clean:
-	rm -f *.o *.obj *.bak *.a *.exe $(PGMS)
-	rm -f *.txt *.log *.mat *~ *.wav *.so
+	rm -f *.o *.obj *.bak *.a *.exe $(PGMS) 
+	rm -f out*.mat out*.wav *.cfg *~ *.so
+	rm -f tst_bbb gprof*.txt gmon.out test.lst
+
+clean_test:
+	rm -f test.lst test/*.mat test/tst_*.wav
 
 # dependencies
-anafilt.o:sigpro.h
-cdb.o:sigpro.h
-convert.obj:sigpro.h
-crfft.o:sigpro.h
-fft.o:sigpro.h
-fftfilt.o:sigpro.h
-filter.o:sigpro.h
-freqshape.o:sigpro.h
-interp.o:sigpro.h
-linspace.o:sigpro.h
-matvar.o:sigpro.h
-rand.o:sigpro.h
-randflat.o:sigpro.h
-rcfft.o:sigpro.h
-scalar.o:sigpro.h
-sptest.o:sigpro.h
-vector.o:sigpro.h
-version.o:sigpro.h version.h
-window.o:sigpro.h
+afc_prepare.o: afc_prepare.c chapro.h ite_fb.h 
+afc_process.o: afc_process.c chapro.h 
+agc_prepare.o: agc_prepare.c chapro.h 
+agc_process.o: agc_process.c chapro.h
+cfirfb_prepare.o: cfirfb_prepare.c chapro.h 
+cfirfb_process.o: cfirfb_process.c chapro.h 
+cha_core.o: cha_core.c chapro.h
+cha_scale.o: cha_scale.c chapro.h
+chapro.o: chapro.c 
+ciirfb_design.o: ciirfb_design.c chapro.h 
+ciirfb_prepare.o: ciirfb_prepare.c chapro.h 
+ciirfb_process.o: ciirfb_process.c chapro.h 
+db.o: db.c chapro.h 
+dciirfb_prepare.o: dciirfb_prepare.c chapro.h 
+dciirfb_process.o: dciirfb_process.c chapro.h 
+fft.o: fft.c chapro.h 
+firfb_prepare.o: firfb_prepare.c chapro.h 
+firfb_process.o: firfb_process.c chapro.h 
+gha_demo.o: gha_demo.c chapro.h 
+icmp_prepare.o: icmp_prepare.c chapro.h 
+icmp_process.o: icmp_process.c chapro.h 
+iirfb.o: iirfb.c 
+iirfb_design.o: iirfb_design.c chapro.h 
+iirfb_prepare.o: iirfb_prepare.c chapro.h 
+iirfb_process.o: iirfb_process.c chapro.h 
+rfft.o: rfft.c chapro.h 
+tst_bbb.o: tst_bbb.c chapro.h 

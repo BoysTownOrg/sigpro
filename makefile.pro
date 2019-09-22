@@ -1,13 +1,13 @@
-# makefile for CHAPRO under Linux
+# makefile for CHAPRO under Linux with profiling
 # Library requirement: sigpro
 # Package requirement: gcc-arm-linux-gnueabihf
 
-LIBS=-lsigpro -lm -lz
-SCLIB=-larsc -lasound $(LIBS)
+LIBS=-lsigpro -lm -lz -pg
+SCLIB=
 CC=gcc 
 AR=ar
 
-CFLAGS=-Wall -Wno-unknown-pragmas -I$(INCDIR) -fPIC -O2
+CFLAGS=-Wall -Wno-unknown-pragmas -I$(INCDIR) -fPIC -pg
 LFLAGS=-L$(LIBDIR)
 
 LIBDIR=/usr/local/lib
@@ -22,89 +22,29 @@ CHAPRO=cha_core.o cha_scale.o db.o fft.o rfft.o \
 	ciirfb_design.o ciirfb_prepare.o ciirfb_process.o \
 	afc_prepare.o afc_process.o \
 	icmp_prepare.o icmp_process.o
-PGMS=tst_cffa tst_cffio tst_cffsc tst_ffa tst_ffio tst_ffsc \
-     tst_cifa tst_cifio tst_cifsc tst_ifa tst_ifio tst_ifsc \
-     tst_gha gha_demo opt_afc
-HDRS=chapro.h 
+PGMS=tst_bbb 
 
-all: $(PGMS)
+profile : $(PGMS) 
+	# profiling...
+	./tst_bbb -r 80 # feedback simulation enabled
+	gprof tst_bbb > gprof1.txt
+	head gprof1.txt
 
-tst: $(PGMS) test.lst
-	./tst_ffa
-	./tst_ffio
-	./tst_ffio -t
-	./tst_ffsc
-	./tst_ifa
-	./tst_ifio
-	./tst_ifio -t
-	./tst_ifsc
-	./tst_cffa
-	./tst_cffio
-	./tst_cffio -t
-	./tst_cffsc
-	./tst_cifa
-	./tst_cifio
-	./tst_cifio -t
-	./tst_cifsc
-	./tst_gha
-	./gha_demo
+fast : $(PGMS) $(PROF)
+	# profiling...
+	./tst_bbb -r 80 -d # feedback simulation disabled
+	gprof tst_bbb > gprof2.txt
+	head gprof2.txt
 
-test.lst:
-	ls -l test > test.lst
-
-tst_cffa : tst_cffa.o  libchapro.a
+tst_bbb : tst_bbb.o  libchapro.a
 	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_cffio : tst_cffio.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_cffsc : tst_cffsc.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_ffa : tst_ffa.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_ffio : tst_ffio.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_ffsc : tst_ffsc.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_cifa : tst_cifa.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_cifio : tst_cifio.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS)
-
-tst_cifsc : tst_cifsc.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_ifa : tst_ifa.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_ifio : tst_ifio.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_ifsc : tst_ifsc.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-tst_gha : tst_gha.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-gha_demo : gha_demo.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
-
-opt_afc : opt_afc.o  libchapro.a
-	$(CC) $(LFLAGS) -o $@ $^ $(LIBS) $(SCLIB)
 
 libchapro.a: $(CHAPRO)
 	$(AR) rs libchapro.a $(CHAPRO)
 
 install: libchapro.a
-	mkdir -p $(LIBDIR)
-	mkdir -p $(INCDIR)
 	cp -f libchapro.a $(LIBDIR)
-	cp -f $(HDRS) $(INCDIR)
+	cp -f chapro.h $(INCDIR)
 
 zipsrc:
 	zip chaprosc *.mgw *.lnx *.mac
@@ -123,7 +63,7 @@ clean:
 	rm -f tst_bbb gprof*.txt gmon.out test.lst
 
 clean_test:
-	rm -f test.lst test/*.mat test/tst_*.wav
+	rm -f test/*.mat test/tst_*.wav
 
 # dependencies
 afc_prepare.o: afc_prepare.c chapro.h ite_fb.h 
@@ -151,7 +91,6 @@ iirfb.o: iirfb.c
 iirfb_design.o: iirfb_design.c chapro.h 
 iirfb_prepare.o: iirfb_prepare.c chapro.h 
 iirfb_process.o: iirfb_process.c chapro.h 
-opt_afc.o: opt_afc.c chapro.h 
 rfft.o: rfft.c chapro.h 
 tst_bbb.o: tst_bbb.c chapro.h 
 tst_cffa.o: tst_cffa.c chapro.h 
