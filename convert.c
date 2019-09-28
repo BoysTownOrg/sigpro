@@ -132,7 +132,7 @@ sp_convert(float *x1, int n1, float *x2, int n2,
     ep = 1 / ((double) n1 * (double) mxupsr);
     wflg = wrap;
     hh = NULL;
-    if (rr == 1) {				// copy
+    if (fabs(rr - 1) < ep) {			// updn ratio = 1
 	if (wflg) {
 	    for (i = 0; i < n2; i++) {
 		x2[i] = x1[i % n1];
