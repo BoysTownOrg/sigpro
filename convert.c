@@ -6,7 +6,7 @@
 
 static float *hh;	    // low-pass filter impulse response
 static int fltwid = 16;	    // low-pass filter width
-static int mxupsr = 512;    // maximum up-sample ratio
+static int mxupsr = 1000;   // maximum up-sample ratio
 static int o1, o2, wflg;
 static int n_up, n_fw, upsr;
 
@@ -146,7 +146,7 @@ sp_convert(float *x1, int n1, float *x2, int n2,
 	for (i = 0; i < n2; i++) {
 	    x2[i] = up(x1, n1, i * o1);
 	}
-    } else {					// updn ratio = max
+    } else {					// up-sample ratio = max
 	for (i = 0; i < n2; i++) {
 	    k = i * (o2 / rr);
 	    j = (int) k;
