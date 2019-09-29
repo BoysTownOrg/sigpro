@@ -185,7 +185,8 @@ FUNC(int) sp_fminsearch(   // minimize parameter set with info
     float  *p,             // parameter list
     int     n,             // number of parameters
     double  (*pvar) (float *, void *), // error function
-    OPT *o                 // options
+    OPT *o,                // options
+    void *ppar             // pointer passed to error function
 );                         // -> error code
 
 FUNC(int) sp_firdb(        // Finite impulse response (FIR)

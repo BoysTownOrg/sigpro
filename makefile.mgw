@@ -8,8 +8,9 @@ CC=gcc
 AR=ar
 SIGPRO_1= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o
 SIGPRO_2= fftfilt.o freqshape.o scalar.o vector.o interp.o convert.o window.o
-SIGPRO_3= matvar.o filter.o anafilt.o wavrw.o fmins.o version.o tictoc.o
-SIGPRO_O= $(SIGPRO_1) $(SIGPRO_2) $(SIGPRO_3)
+SIGPRO_3= matvar.o filter.o anafilt.o wavrw.o fmins.o fminsearch.o version.o
+SIGPRO_4= tictoc.o
+SIGPRO_O= $(SIGPRO_1) $(SIGPRO_2) $(SIGPRO_3) $(SIGPRO_4)
 LIBDIR=c:/usr/lib
 INCDIR=c:/usr/include
 BINDIR=c:/usr/bin
@@ -66,6 +67,7 @@ libsigpro.a: $(SIGPRO_O)
 	$(AR) rs libsigpro.a $(SIGPRO_1)
 	$(AR) rs libsigpro.a $(SIGPRO_2)
 	$(AR) rs libsigpro.a $(SIGPRO_3)
+	$(AR) rs libsigpro.a $(SIGPRO_4)
 
 install: libsigpro.a rdmat
 	cp -f libsigpro.a $(LIBDIR)
