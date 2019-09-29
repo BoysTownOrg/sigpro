@@ -181,6 +181,13 @@ FUNC(int) sp_fmins(        // minimize parameter set
     OPT *o                 // options
 );                         // -> error code
 
+FUNC(int) sp_fminsearch(   // minimize parameter set with info
+    float  *p,             // parameter list
+    int     n,             // number of parameters
+    double  (*pvar) (float *, void *), // error function
+    OPT *o                 // options
+);                         // -> error code
+
 FUNC(int) sp_firdb(        // Finite impulse response (FIR)
     float *b,              // FIR waveform
     int nb,                // FIR size
