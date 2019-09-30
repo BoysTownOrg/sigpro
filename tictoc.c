@@ -9,6 +9,7 @@ static double tic_time;
 
 FUNC(double) sp_tic(void)
 {
+    tic_time = clock();
     return (tic_time / CLOCKS_PER_SEC);
 }
 
