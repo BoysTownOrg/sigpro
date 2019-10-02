@@ -706,7 +706,7 @@ var_string(VAR *vl, const char *name, void *strptr)
     int i, n;
 
     s = (char *) strptr;
-    n = strlen(s);
+    n = strlen(s) + 1;
     data = (float *) calloc(n, sizeof(float));
     for (i = 0; i < n; i++) {
         data[i] = s[i];
