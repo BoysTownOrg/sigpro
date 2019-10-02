@@ -44,9 +44,9 @@ rdmat(char *fn)
     }
     vl = sp_mat_whos(fn);
     if (prnv) {
-	printf("     name  rows  cols type        data\n");
+	printf("     name   rows   cols type        data\n");
     } else {
-	printf("     name  rows  cols type\n");
+	printf("     name   rows   cols type\n");
     }
     for (i = 0; i < nv; i++) {
 	vn = vl[i].name;
@@ -65,7 +65,7 @@ rdmat(char *fn)
 	} else {
 	    mod = ' ';
 	}
-	printf("%9s %5d %5d  %s%c", vn, nr, nc, dt, mod);
+	printf("%9s %6d %6d  %s%c", vn, nr, nc, dt, mod);
 	if (prnv) {
 	    vc = sp_mat_fetch(fn, vn, NULL, nrc);
 	    sp_var_float(vc);
