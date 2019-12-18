@@ -1,7 +1,15 @@
 // sigpro.h - function prototypes for SIGPRO library
 #ifndef SIGPRO_H
 #define SIGPRO_H
+
+#if !defined(_MSC_VER) || (_MSC_VER > 1500)
 #include <stdint.h>
+#else
+typedef short int16_t;
+typedef long int32_t;
+typedef unsigned short uint16_t;
+typedef unsigned long uint32_t;
+#endif
 
 #ifdef DLL
 #define FUNC(type) __declspec(dllexport) type _stdcall
@@ -19,9 +27,9 @@ typedef struct {
 typedef struct {
     float icons, ifrac, ffrac;
     float tolfun, tolx;
-    int display, funchk;
-    int maxeval, maxiter, miniter;
-    int (*escape)(void);
+    int32_t display, funchk;
+    int32_t maxeval, maxiter, miniter;
+    int32_t (*escape)(void);
     void (*report)(float *);
 } OPT;
 
