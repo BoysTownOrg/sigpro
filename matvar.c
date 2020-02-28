@@ -644,8 +644,8 @@ mat_wr(FILE *fp, char *nam, void *d, int r, int c, int dtyp, int txt, int cx)
 /*..........................................................................*/
 
 typedef struct {
-    int lstsiz;
     VAR *varlst;
+    int lstsiz;
 } VRL;
 
 static int nvl = 0;

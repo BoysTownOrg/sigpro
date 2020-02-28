@@ -1,10 +1,12 @@
 /* version.h */
 
-#define VER     "SigPro version 0.39, 30-Sep-19"
-#define NOTICE	"Copyright 2005-2019 Boys Town National Research Hospital"
+#define VER     "SigPro version 0.40, 20-Feb-20"
+#define NOTICE	"Copyright 2005-2020 Boys Town National Research Hospital"
 #define RIGHTS	"Non-profit redistribution permitted."
 
 /**************************** change log **********************************
+0.40 - 20-Feb-20
+> Fixed bug in sp_tic.
 0.39 - 30-Sep-19
 > Fixed bug in sp_tic.
 0.38 - 21-Sep-19
