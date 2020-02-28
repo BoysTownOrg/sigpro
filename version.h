@@ -6,7 +6,7 @@
 
 /**************************** change log **********************************
 0.40 - 20-Feb-20
-> Fixed bug in sp_tic.
+> No code change.
 0.39 - 30-Sep-19
 > Fixed bug in sp_tic.
 0.38 - 21-Sep-19
