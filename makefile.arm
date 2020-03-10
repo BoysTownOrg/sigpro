@@ -3,7 +3,7 @@
 # Note: remove -DZLIB & -lz to compile without zlib
 CFLAGS=-Wall -I$(INCDIR) -Wno-unused-local-typedef -fPIC
 LIBS=-lm
-CC=arm-linux-gnueabihf-gcc
+CC=arm-linux-gnueabihf-gcc-7
 AR=arm-linux-gnueabihf-ar
 SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
     fftfilt.o freqshape.o scalar.o vector.o interp.o convert.o window.o \
@@ -26,7 +26,7 @@ install: $(LIBDIR)/libsigpro.a
 zipsrc:
 	zip sigprosc *.mgw *.lnx *.mac
 	zip sigprosc *.h *.c *.plt *.std *.m *.def
-	zip sigprosc VS9/*.sln VS9/*.vcpro test/*.mat
+	zip sigprosc VS16/*.sln VS16/*.vcxproj test/*.mat
 	zip sigprosc configure configure.bat
 
 clean:
