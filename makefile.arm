@@ -17,11 +17,10 @@ TST= rdmat tst_fft tst_shp tst_src tst_mat tst_wav tst_afd tst_xfr tst_min \
 libsigpro.a: $(SIGPRO_O)
 	$(AR) rs libsigpro.a $(SIGPRO_O)
 
-$(LIBDIR)/libsigpro.a : libsigpro.a
-	mkdir -p $(LIBDIR)
-	cp -f libsigpro.a $(LIBDIR)
-
-install: $(LIBDIR)/libsigpro.a 
+install: libsigpro.a 
+	mkdir -p $(LIBDIR) $(INCDIR)
+	install libsigpro.a  $(LIBDIR)
+	install sigpro.h $(INCDIR)
 
 zipsrc:
 	zip sigprosc *.mgw *.lnx *.mac
