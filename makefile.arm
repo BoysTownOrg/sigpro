@@ -10,8 +10,9 @@ SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
     matvar.o filter.o anafilt.o wavrw.o fmins.o fminsearch.o version.o \
     tictoc.o
 
-LIBDIR=/usr/arm-linux-gnueabihf/lib
-INCDIR=/usr/arm-linux-gnueabihf/include
+LIBDIR=/usr/local/arm/lib
+INCDIR=/usr/local/arm/include
+BINDIR=/usr/local/arm/bin
 
 TST= rdmat tst_fft tst_shp tst_src tst_mat tst_wav tst_afd tst_xfr tst_min \
     tst_cpx tst_tb
