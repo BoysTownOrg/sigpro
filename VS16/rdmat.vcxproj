@@ -69,7 +69,6 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -91,7 +90,8 @@
     </Bscmake>
     <PostBuildEvent>
       <Message>install rdmat</Message>
-      <Command>copy $(TargetPath) c:\usr\bin</Command>
+      <Command>mkdir c:\usr\bin
+copy $(TargetPath) c:\usr\bin</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
