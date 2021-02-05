@@ -15,7 +15,7 @@ LIBDIR=c:/usr/lib
 INCDIR=c:/usr/include
 BINDIR=c:/usr/bin
 PGMS= rdmat tst_fft tst_shp tst_src tst_mat tst_wav tst_afd tst_xfr tst_min \
-	tst_cpx tst_tb
+	tst_cpx tst_tb tst_bbf
 
 test : $(PGMS)
 	./tst_shp
@@ -25,6 +25,7 @@ test : $(PGMS)
 	./tst_mat
 	./tst_wav
 	./tst_afd
+	./tst_bbf
 	./tst_xfr
 	./tst_min
 	./tst_cpx
@@ -49,6 +50,9 @@ tst_tb : tst_tb.o libsigpro.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 tst_afd : tst_afd.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_bbf : tst_bbf.o libsigpro.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 tst_xfr : tst_xfr.o libsigpro.a
@@ -111,6 +115,7 @@ rdmat.o:sigpro.h
 scalar.o:sigpro.h
 sptest.o:sigpro.h
 tst_afd.o:sigpro.h
+tst_bbf.o:sigpro.h
 tst_fft.o:sigpro.h
 tst_mat.o:sigpro.h
 tst_min.o:sigpro.h
