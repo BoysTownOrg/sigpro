@@ -12,7 +12,7 @@
 
 // bilinear_pole - transform analog pole to IIR pole
 static void
-bilinear_pole(float* p, double* ap, double wp)
+bilinear_pole(double* p, double* ap, double wp)
 {
     double aa, bb, c1, c2, c3, p1, p2;
 
@@ -23,20 +23,20 @@ bilinear_pole(float* p, double* ap, double wp)
     c3 = 1 + aa + bb;
     p1 = -c2 / (2 * c1);
     if (ap[1] == 0) {
-        p[0] = (float)p1;
+        p[0] = p1;
         p[1] = 0;
     }
     else {
         p2 = sqrt(c3 / c1 - p1 * p1);
-        p[0] = (float)p1;
-        p[1] = (float)p2;
-        p[2] = (float)p1;
-        p[3] = (float)-p2;
+        p[0] = p1;
+        p[1] = p2;
+        p[2] = p1;
+        p[3] = -p2;
     }
 }
 
 static double
-gain(float* z, float* p, int nz, double w)
+gain(double* z, double* p, int nz, double w)
 {
     double f[2], x[2], y[2], xr, xi, yr, yi, xm, ym, temp;
     int j, jr, ji;
@@ -67,10 +67,10 @@ gain(float* z, float* p, int nz, double w)
 
 // pole2zp - transform analog pole to IIR zeros, poles, and gain
 static void
-pole2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
+pole2zp(double* z, double* p, double* g, double* ap, int np, float* wn, int ft)
 {
     double bw, u0, u1, wc, wp, Q, M, A, zz[2], pp[2], M1[2], M2[2], N[2];
-    float  p1[4], p2[4], z1[4];
+    double  p1[4], p2[4], z1[4];
     int j, m = 4;
 
     if ((ft == 0) || (ft == 1)) {
@@ -79,18 +79,16 @@ pole2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
         pp[1] = ap[1] * u0;
         wp = (ft == 0) ? 1 : -1;
         bilinear_pole(p, pp, wp);
-        z[0] = (float)-wp;
+        z[0] = -wp;
         z[1] = 0;
         if (ap[1] == 0) {
-            g[0] = (float)fabs(wp - p[0]) / 2;
-        }
-        else {
+            g[0] = fabs(wp - p[0]) / 2;
+        } else {
             z[2] = z[0];
             z[3] = z[1];
-            g[0] = (float)((wp - p[0]) * (wp - p[0]) + p[1] * p[1]) / 4;
+            g[0] = ((wp - p[0]) * (wp - p[0]) + p[1] * p[1]) / 4;
         }
-    }
-    else {
+    } else {
         u0 = tan(M_PI * wn[0] / 2);
         u1 = tan(M_PI * wn[1] / 2);
         bw = u1 - u0;        // bandwidth
@@ -101,8 +99,7 @@ pole2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
             z1[1] = 0;
             z1[2] = -1;
             z1[3] = 0;
-        }
-        else {
+        } else {
             wp = -1;
             zz[0] = 0;
             zz[1] = wc;
@@ -139,13 +136,13 @@ pole2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
             }
         }
         wc = (ft == 2) ? sqrt(wn[0] * wn[1]) : 0;
-        g[0] = (float)gain(z, p, m, wc);
+        g[0] = gain(z, p, m, wc);
     }
 }
 
 // ap2zp - transform analog prototype to IIR zeros, poles, and gain
 static void
-ap2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
+ap2zp(double* z, double* p, double* g, double* ap, int np, float* wn, int ft)
 {
     double gg;
     int j, jm, m;
@@ -157,14 +154,14 @@ ap2zp(float* z, float* p, float* g, double* ap, int np, float* wn, int ft)
         pole2zp(z + jm, p + jm, g, ap + j * 2, np, wn, ft);
         gg *= g[0];
     }
-    *g = (float)gg;
+    *g = gg;
 }
 
 /***********************************************************/
 
 // transform polynomial roots to coefficients
 static void
-root2poly(float* r, double* p, int n)
+root2poly(double* r, double* p, int n)
 {
     double* pp, * qq;
     int i, ir, ii, j, jr, ji;
@@ -197,7 +194,7 @@ root2poly(float* r, double* p, int n)
 
 // transform filterbank poles and zeros to IIR coefficients
 static void
-zp2ba(float* z, float* p, int nz, float* b, float* a)
+zp2ba(double* z, double* p, int nz, float* b, float* a)
 {
     double *bd, *ad;
     int i;
@@ -214,18 +211,18 @@ zp2ba(float* z, float* p, int nz, float* b, float* a)
     free(ad);
 }
 
-// lp2bx - lp2bx band-pass or band-stop
+// lp2tf - lp2tf band-pass or band-stop transfer function
 static void
-lp2bx(float* lp, int np, float* b, float* a, float* wn, int ft)
+lp2tf(double* lp, int np, float* b, float* a, float* wn, int ft)
 {
     double *ap;
-    float *z, *p, g[1];
+    double *z, *p, g[1];
     int i, ir, ii, m;
 
     // allocate local arrays
     ap = (double*)calloc(np * 2, sizeof(double));
-    z = (float*)calloc(np * 4, sizeof(float));
-    p = (float*)calloc(np * 4, sizeof(float));
+    z = (double*)calloc(np * 4, sizeof(double));
+    p = (double*)calloc(np * 4, sizeof(double));
     // copy low-pass prototype to analog prototype
     m = np / 2;
     for (i = 0; i < m; i++) {
@@ -246,7 +243,7 @@ lp2bx(float* lp, int np, float* b, float* a, float* wn, int ft)
     if (ft > 1) np *= 2;
     zp2ba(z, p, np, b, a);
     for (i = 0; i <= np; i++) {
-        b[i] *= g[0];
+        b[i] *= (float)g[0];
     }
     // free local arrays
     free(ap);
@@ -257,7 +254,7 @@ lp2bx(float* lp, int np, float* b, float* a, float* wn, int ft)
 /**********************************************************/
 
 static void
-butterp(float *p, int n)
+butterp(double *p, int n)
 {
     double aa;
     int i, ir, ii, m;
@@ -270,8 +267,8 @@ butterp(float *p, int n)
         ir = 2 * i;
         ii = ir + 1;
         aa = ii * M_PI / (2 * n);
-        p[ir] = (float) (-sin(aa));
-        p[ii] = (float) (cos(aa));
+        p[ir] = (-sin(aa));
+        p[ii] = (cos(aa));
     }
     if (n % 2) {
         p[n - 1] = -1;
@@ -279,7 +276,7 @@ butterp(float *p, int n)
 }
 
 static void
-besselp(float *p, int n)
+besselp(double *p, int n)
 {
     int i;
     static double p01[] = {-1.000000000};
@@ -328,12 +325,12 @@ besselp(float *p, int n)
         return;
     }
     for (i = 0; i < n; i++) {
-        p[i] = (float) ((pp[n-1])[i]);
+        p[i] = ((pp[n-1])[i]);
     }
 }
 
 static void
-chebyp(float *p, int n, double rip)
+chebyp(double *p, int n, double rip)
 {
     double aa, eps, mu;
     int i, ir, ii, m;
@@ -348,8 +345,8 @@ chebyp(float *p, int n, double rip)
         ir = 2 * i;
         ii = ir + 1;
         aa = ii * M_PI / (2 * n);
-        p[ir] = (float) (-sin(aa) * sinh(mu));
-        p[ii] = (float) (cos(aa) * cosh(mu));
+        p[ir] = (-sin(aa) * sinh(mu));
+        p[ii] = (cos(aa) * cosh(mu));
     }
     if (n % 2) {
         p[n - 1] = -1;
@@ -366,11 +363,11 @@ FUNC(void) sp_bessel(   // Bessel filter design
     int ft              // filter type 
 )
 {
-    float *p;
+    double *p;
     
-    p = (float *) calloc(n, sizeof(float));
+    p = (double *) calloc(n, sizeof(double));
     besselp(p, n);
-    lp2bx(p, n, b, a, wn, ft);
+    lp2tf(p, n, b, a, wn, ft);
     free(p);
 }
 
@@ -382,11 +379,11 @@ FUNC(void) sp_butter(	// Butterworth filter design
     int ft              // filter type 
 )
 {
-    float *p;
+    double *p;
     
-    p = (float *) calloc(n, sizeof(float));
+    p = (double *) calloc(n, sizeof(double));
     butterp(p, n);
-    lp2bx(p, n, b, a, wn, ft);
+    lp2tf(p, n, b, a, wn, ft);
     free(p);
 }
 
@@ -400,10 +397,10 @@ FUNC(void) sp_cheby(    // Chebyshev filter design
     double rip          // pass-band ripple
 )
 {
-    float *p;
+    double *p;
     
-    p = (float *) calloc(n, sizeof(float));
+    p = (double *) calloc(n, sizeof(double));
     chebyp(p, n, rip);
-    lp2bx(p, n, b, a, wn, ft);
+    lp2tf(p, n, b, a, wn, ft);
     free(p);
 }

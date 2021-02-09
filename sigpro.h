@@ -382,6 +382,15 @@ FUNC(int) sp_vdiv(          // vector divide: z=x/y
     int n                   // array size
 );                          // -> error code
 
+FUNC(void) sp_var_add(      // add variable to list
+    VAR* vl,                // variable list
+    const char* name,       // variable name
+    void* data,             // pointer to data array
+    int32_t rows,           // number of rows
+    int32_t cols,           // number of columns
+    const char* frmt        // format string
+);
+
 FUNC(VAR *) sp_var_alloc(   // allocates memory for a variable list
     int nvar                // number of variables
 );                          // -> variable list
@@ -431,15 +440,6 @@ FUNC(int32_t) sp_var_i4(    // get int32_t value from variable
 );
 
 FUNC(void) sp_var_set(      // set variable in list
-    VAR *vl,                // variable list
-    const char *name,       // variable name
-    void *data,             // pointer to data array
-    int32_t rows,           // number of rows
-    int32_t cols,           // number of columns
-    const char *frmt        // format string
-);
-
-FUNC(void) sp_var_add(      // add variable to list
     VAR *vl,                // variable list
     const char *name,       // variable name
     void *data,             // pointer to data array

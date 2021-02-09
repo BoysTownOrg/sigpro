@@ -1,6 +1,10 @@
 LIBRARY sigpro
-EXPORTS sp_cdb
+EXPORTS sp_butter
+	sp_bessel
+	sp_cdb
 	sp_chirp
+	sp_cgd
+	sp_cheby
 	sp_cmagsq
 	sp_convert
 	sp_copy
@@ -19,6 +23,7 @@ EXPORTS sp_cdb
 	sp_fmins
 	sp_fminsearch
 	sp_freqshape
+	sp_freqz
 	sp_frqshp
 	sp_ifft
 	sp_interp
@@ -38,13 +43,13 @@ EXPORTS sp_cdb
 	sp_sadd
 	sp_sma
 	sp_smul
-	sp_unwrap
-	sp_transfer
 	sp_tic
 	sp_toc
+	sp_transfer
+	sp_unwrap
 	sp_vadd
-	sp_var_alloc
 	sp_var_add
+	sp_var_alloc
 	sp_var_clear
 	sp_var_clear_all
 	sp_var_copy

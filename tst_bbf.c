@@ -83,10 +83,10 @@ show_coef(char* s, float* c, int n, double g)
 int
 main()
 {
-    double gn = 1;
+    double gn = 1e-3;
     float *a, *b, *x, *y;
     int no, np, nc, ft;
-    static float wn[2] = { 0.029462f, 0.058925f };
+    static float wn[2] = { 0.0295f, 0.0589f };
 
     ft = 2;	    // filter type: 0=low_pass, 1=high_pass, 2=band_pass
     no = 2;	    // filter order

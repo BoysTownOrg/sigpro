@@ -1,10 +1,12 @@
 /* version.h */
 
-#define VER     "SigPro version 0.41, 5-Feb-21"
+#define VER     "SigPro version 0.42, 9-Feb-21"
 #define NOTICE	"Copyright 2005-2021 Boys Town National Research Hospital"
 #define RIGHTS	"Non-profit redistribution permitted."
 
 /**************************** change log **********************************
+0.42 - 9-Feb-21
+> Added missing EXPORTS to sigpro.def
 0.41 - 5-Feb-21
 > Fixed band-pass filter in anaflt.c
 0.40 - 20-Feb-20
