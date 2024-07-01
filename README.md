@@ -43,5 +43,5 @@ Report bugs to Stephen.Neely@boystown.org.
 
 License
 
-Creative Commons?
+Distributed under a creative commons license (BY-NC-SA).
 
