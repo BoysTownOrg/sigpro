@@ -1,0 +1,2 @@
+O:\STN\RC_src\sigpro\VS16\ARM64\Release\zlib\zlib.lib
+N:\STN\RC_src\sigpro\VS16\ARM64\Release\zlib\zlib.lib

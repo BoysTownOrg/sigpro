@@ -86,11 +86,11 @@ install: $(BINDIR)/rdmat $(LIBDIR)/libsigpro.a $(INCDIR)/sigpro.h
 zipsrc:
 	zip sigprosc *.mgw *.lnx *.mac
 	zip sigprosc *.h *.c *.plt *.std *.m *.def
-	zip sigprosc VS16/*.sln VS16/*.vcxproj VS16/*.filters test/*.mat
+	zip sigprosc VS18/*.sln VS18/*.vcxproj VS18/*.filters test/*.mat
 	zip sigprosc configure configure.bat
 
 zipdll:
-	zip -j sigprdll VS16/Release/sigpro.dll
+	zip -j sigprdll VS18/Release/sigpro.dll
 	zip -j sigprdll sigpro.h
 
 dist: zipsrc zipdll

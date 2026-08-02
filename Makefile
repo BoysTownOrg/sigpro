@@ -1,0 +1,134 @@
+# makefile for SIGPRO under Linux
+
+# Note: remove -DZLIB & -lz to compile without zlib
+#CFLAGS=-Wall -I$(INCDIR) -DZLIB -Wno-unused-local-typedef -fPIC
+CFLAGS=-Wall -I$(INCDIR) -Wno-unused-local-typedef -fPIC
+LIBS=-lm -lz
+CC=gcc
+AR=ar
+SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
+    fftfilt.o freqshape.o scalar.o vector.o interp.o convert.o window.o \
+    matvar.o filter.o anafilt.o wavrw.o fmins.o fminsearch.o version.o \
+    tictoc.o
+LIBDIR=/usr/local/lib
+INCDIR=/usr/local/include
+BINDIR=/usr/local/bin
+TST= rdmat tst_fft tst_shp tst_src tst_mat tst_wav tst_afd tst_xfr tst_min \
+    tst_cpx tst_tb tst_bbf
+PGMS= $(TST) rdmat
+
+test : $(PGMS)
+	./tst_shp
+	./tst_src
+	./tst_fft
+	diff -s tst_fft.lnx tst_fft.txt
+	./tst_mat
+	./tst_wav
+	./tst_afd
+	./tst_bbf
+	./tst_xfr
+	./tst_min
+	./tst_cpx
+	./tst_tb
+
+tst_fft : tst_fft.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_shp : tst_shp.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_src : tst_src.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_mat : tst_mat.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_wav : tst_wav.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_tb : tst_tb.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_afd : tst_afd.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_bbf : tst_bbf.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_xfr : tst_xfr.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_min : tst_min.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+tst_cpx : tst_cpx.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+rdmat : rdmat.o libsigpro.a
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+libsigpro.a: $(SIGPRO_O)
+	$(AR) rs libsigpro.a $(SIGPRO_O)
+
+$(LIBDIR)/libsigpro.a : libsigpro.a
+	mkdir -p $(LIBDIR)
+	cp -f libsigpro.a $(LIBDIR)
+
+$(INCDIR)/sigpro.h : sigpro.h
+	mkdir -p $(INCDIR)
+	cp -f sigpro.h $(INCDIR)
+
+$(BINDIR)/rdmat : rdmat
+	mkdir -p $(BINDIR)
+	cp -f rdmat $(BINDIR)
+
+install: $(BINDIR)/rdmat $(LIBDIR)/libsigpro.a $(INCDIR)/sigpro.h
+
+zipsrc:
+	zip sigprosc *.mgw *.lnx *.mac
+	zip sigprosc *.h *.c *.plt *.std *.m *.def
+	zip sigprosc VS18/*.sln VS18/*.vcxproj test/*.mat
+	zip sigprosc configure configure.bat
+
+zipdll:
+	zip -j sigprdll VS18/Release/sigpro.dll
+	zip -j sigprdll sigpro.h
+
+dist: zipsrc zipdll
+	cp -f sigpr*.zip ../dist
+	rm -f *.zip
+
+clean:
+	rm -f *.o *.obj *.bak *.a *.exe $(PGMS)
+	rm -f *.txt *.log *.mat *~ *.wav *.so test/*.mat
+
+# dependencies
+anafilt.o:sigpro.h
+cdb.o:sigpro.h
+convert.obj:sigpro.h
+crfft.o:sigpro.h
+fft.o:sigpro.h
+fftfilt.o:sigpro.h
+filter.o:sigpro.h
+freqshape.o:sigpro.h
+interp.o:sigpro.h
+linspace.o:sigpro.h
+matvar.o:sigpro.h
+rand.o:sigpro.h
+randflat.o:sigpro.h
+rcfft.o:sigpro.h
+scalar.o:sigpro.h
+sptest.o:sigpro.h
+tst_afd.o:sigpro.h
+tst_bbf.o:sigpro.h
+tst_cpx.o:sigpro.h
+tst_fft.o:sigpro.h
+tst_mat.o:sigpro.h
+tst_min.o:sigpro.h
+tst_shp.o:sigpro.h
+tst_src.o:sigpro.h
+tst_wav.o:sigpro.h
+tst_xfr.o:sigpro.h
+vector.o:sigpro.h
+version.o:sigpro.h version.h
+window.o:sigpro.h

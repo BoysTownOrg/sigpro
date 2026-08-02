@@ -81,7 +81,7 @@ install: libsigpro.a rdmat
 zipsrc:
 	zip sigprosc *.mgw *.lnx *.mac
 	zip sigprosc *.h *.c *.plt *.std *.m *.def
-	zip sigprosc VS16/*.sln VS16/*.vcxproj VS16/*.filters test/*
+	zip sigprosc VS18/*.sln VS18/*.vcxproj VS18/*.filters test/*
 	zip sigprosc configure configure.bat
 
 zipdll:

@@ -74,7 +74,7 @@ main()
     int no, np, nc, ft;
 
     ft = 0;	    // filter type: 0=low_pass, 1=high_pass
-    no = 3;	    // filter order
+    no = 2;	    // filter order
     np = 1024;	    // number of samples
     nc = no + 1;
     wn[0] = 0.1f;   // cutoff_frequency / half_sample_rate
