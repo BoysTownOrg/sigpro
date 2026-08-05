@@ -16,7 +16,7 @@ To provide C programs with basic signal-processing functions available in MATLAB
 
 Installation
 
-Download repo from https://github.com/BTNRH/sigpro. Makefiles are provided for building test programs at Linux, MacOS, or MinGW command lines. A solution file is provided in the VS9 folder for building under Visual Studio.
+Download repo from https://github.com/BTNRH/sigpro. Makefiles are provided for building test programs at Linux or MacOS command lines. A solution file is provided in the VS9 folder for building under Visual Studio.
 
 API Reference
 

@@ -85,7 +85,7 @@ $(BINDIR)/rdmat : rdmat
 install: $(BINDIR)/rdmat $(LIBDIR)/libsigpro.a $(INCDIR)/sigpro.h
 
 zipsrc:
-	zip sigprosc *.mgw *.lnx *.mac
+	zip sigprosc *.lnx *.mac
 	zip sigprosc *.h *.c *.plt *.std *.m *.def
 	zip sigprosc VS18/*.sln VS18/*.vcxproj test/*.mat
 	zip sigprosc configure configure.bat
