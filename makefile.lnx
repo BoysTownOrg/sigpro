@@ -6,7 +6,7 @@ LIBS=-lm -lz
 CC=gcc
 AR=ar
 SIGPRO_O= fft.o rcfft.o crfft.o cdb.o linspace.o rand.o randflat.o \
-    fftfilt.o freqshape.o scalar.o vector.o interp.o convert.o window.o \
+    fftfilt.o freqshape.o chirp.o scalar.o vector.o interp.o convert.o window.o \
     matvar.o filter.o anafilt.o wavrw.o fmins.o fminsearch.o version.o \
     tictoc.o
 LIBDIR=/usr/local/lib
@@ -68,6 +68,9 @@ rdmat : rdmat.o libsigpro.a
 
 libsigpro.a: $(SIGPRO_O)
 	$(AR) rs libsigpro.a $(SIGPRO_O)
+
+libsigpro.so: $(SIGPRO_O)
+	$(CC) -shared -o libsigpro.so $(SIGPRO_O) $(LIBS)
 
 $(LIBDIR)/libsigpro.a : libsigpro.a
 	mkdir -p $(LIBDIR)
